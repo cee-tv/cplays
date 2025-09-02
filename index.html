@@ -1,0 +1,284 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign In - CEEPLAY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 5 CSS and Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #667eea;
+      --background-color: #000000;
+      --text-color: #ffffff;
+      --card-color: rgba(17, 17, 17, 0.7);
+      --input-color: rgba(24, 24, 24, 0.5);
+      --accent-color: #b3b3b3;
+    }
+
+    body {
+      font-family: 'Noto Sans', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+      background-attachment: fixed;
+      color: var(--text-color);
+      margin: 0;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    body::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.01) 2px,
+                rgba(255, 255, 255, 0.01) 4px
+            ),
+            repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.01) 2px,
+                rgba(255, 255, 255, 0.01) 4px
+            );
+        pointer-events: none;
+    }
+
+    .main-container {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        backdrop-filter: blur(20px);
+    }
+
+    .signin-card {
+        max-width: 400px;
+        width: 90%;
+        border: none;
+        border-radius: 1.5rem;
+        background: rgba(17, 17, 17, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 
+            0 8px 32px rgba(102, 126, 234, 0.3),
+            0 1px 2px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        padding: 2.5rem;
+        margin: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .signin-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+            0 12px 40px rgba(102, 126, 234, 0.4),
+            0 2px 8px rgba(255, 255, 255, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .signin-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+    }
+
+    h2 {
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.8rem;
+        letter-spacing: -0.02em;
+    }
+
+    #key-input {
+        font-size: 1.1rem;
+        letter-spacing: 0.04em;
+        padding: 1em 1.2em;
+        background: rgba(24, 24, 24, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.75rem;
+        color: #ffffff;
+        transition: all 0.3s ease;
+        box-shadow: 
+            inset 0 1px 2px rgba(0, 0, 0, 0.2),
+            0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    #key-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 
+            0 0 0 3px rgba(102, 126, 234, 0.4),
+            inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        background: rgba(24, 24, 24, 0.8);
+    }
+
+    #key-input::placeholder {
+        color: rgba(179, 179, 179, 0.7);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border: none;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        font-size: 1rem;
+        padding: 0.75rem 2rem;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+        box-shadow: 
+            0 4px 12px rgba(102, 126, 234, 0.3),
+            0 1px 3px rgba(0, 0, 0, 0.1);
+        max-width: 180px;
+        margin: 0 auto;
+    }
+
+    .btn-primary:hover, .btn-primary:focus {
+        background: linear-gradient(135deg, #764ba2, #667eea);
+        transform: translateY(-1px);
+        box-shadow: 
+            0 6px 16px rgba(102, 126, 234, 0.4),
+            0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 
+            0 2px 8px rgba(102, 126, 234, 0.3),
+            0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-outline-secondary {
+        border-radius: 2em;
+        background: rgba(108, 117, 125, 0.1);
+        border-color: rgba(108, 117, 125, 0.3);
+        color: var(--accent-color);
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-secondary:hover {
+        background: rgba(108, 117, 125, 0.2);
+        border-color: rgba(108, 117, 125, 0.5);
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    .form-check-label {
+        font-size: 0.9rem;
+        color: rgba(179, 179, 179, 0.9);
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .form-check-label:hover {
+        color: rgba(179, 179, 179, 1);
+    }
+
+    .footer {
+        color: rgba(179, 179, 179, 0.7);
+        font-size: 0.9rem;
+        text-align: center;
+        margin-top: 2rem;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .main-container > * {
+        animation: fadeIn 0.6s ease forwards;
+    }
+
+    @media (max-width: 480px) {
+      .signin-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+        backdrop-filter: blur(15px);
+      }
+      .main-container {
+        padding: 1rem;
+      }
+      .signin-card:hover {
+        transform: none;
+      }
+    }
+
+    @media (min-width: 768px) {
+        body::before {
+            background: radial-gradient(circle at 60% 40%, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="card signin-card p-4 mx-auto">
+      <div class="text-center mb-3">
+        <i class="bi bi-tv-fill signin-icon"></i>
+      </div>
+      <h2 class="mb-3 fw-bold text-center text-white">Sign in to CEEPLAY</h2>
+      <form id="signin-form" autocomplete="off">
+        <input type="password" class="form-control mb-3 text-center" id="key-input" placeholder="Enter today's access key..." required autocomplete="off">
+        <div class="form-check mb-3 text-start">
+          <input class="form-check-input" type="checkbox" value="" id="save-key">
+          <label class="form-check-label" for="save-key">
+            Remember key for this browser
+          </label>
+        </div>
+        <div class="text-center mt-3">
+          <button type="submit" class="btn btn-primary" style="max-width: 200px; margin: 0 auto;">
+            <i class="bi bi-box-arrow-in-right"></i> Sign In
+          </button>
+        </div>
+      </form>
+      <div id="signin-message" class="mt-3"></div>
+      <div class="mt-3 text-center">
+        <a href="https://ceekey.vercel.app" target="_blank" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-link-45deg"></i> Get Today's Key
+        </a>
+      </div>
+    </div>
+    <footer class="footer mt-4 text-center">
+      <span><i class="bi bi-person-circle"></i> Made by Ceephc</span>
+    </footer>
+  </div>
+  <script>
+    const _0x4e6afc=_0x57d3;(function(_0x384c07,_0x581549){const _0x1115b0=_0x57d3,_0x82b3ef=_0x384c07();while(!![]){try{const _0x55ef47=parseInt(_0x1115b0(0x9e))/0x1+parseInt(_0x1115b0(0xac))/0x2*(parseInt(_0x1115b0(0x9b))/0x3)+-parseInt(_0x1115b0(0xb4))/0x4*(parseInt(_0x1115b0(0x9f))/0x5)+parseInt(_0x1115b0(0x9a))/0x6+-parseInt(_0x1115b0(0xab))/0x7+-parseInt(_0x1115b0(0xb3))/0x8*(-parseInt(_0x1115b0(0xa8))/0x9)+-parseInt(_0x1115b0(0xa5))/0xa*(parseInt(_0x1115b0(0xb1))/0xb);if(_0x55ef47===_0x581549)break;else _0x82b3ef['push'](_0x82b3ef['shift']());}catch(_0x1b2c50){_0x82b3ef['push'](_0x82b3ef['shift']());}}}(_0x1106,0xdb70a));function hi(){const _0x23136c=_0x57d3;console[_0x23136c(0xb7)]('Hello\x20World!');}function _0x57d3(_0x8bccc7,_0x19fa4e){const _0x1106c0=_0x1106();return _0x57d3=function(_0x57d374,_0x284623){_0x57d374=_0x57d374-0x92;let _0x193a77=_0x1106c0[_0x57d374];return _0x193a77;},_0x57d3(_0x8bccc7,_0x19fa4e);}hi();let todayKey='',todayKeyDate='';function getTodayKeyDate(){const _0x4ab20e=_0x57d3,_0x4b183b=new Date(),_0x4dc157=_0x4b183b[_0x4ab20e(0xb5)](),_0x1942cf=String(_0x4b183b['getUTCMonth']()+0x1)[_0x4ab20e(0x99)](0x2,'0'),_0x33376d=String(_0x4b183b[_0x4ab20e(0xaf)]())[_0x4ab20e(0x99)](0x2,'0');return _0x4dc157+'-'+_0x1942cf+'-'+_0x33376d;}async function fetchTodayKey(){const _0x8143b1=_0x57d3;todayKeyDate=getTodayKeyDate();const _0x46a7a2=todayKeyDate+_0x8143b1(0xa9),_0x38e4c7=_0x8143b1(0x92)+_0x46a7a2;try{const _0x4bde60=await fetch(_0x38e4c7);if(!_0x4bde60['ok'])throw new Error(_0x8143b1(0xa0));todayKey=(await _0x4bde60['text']())['trim']();}catch{todayKey='';}}function saveKeyForToday(_0x3ed9bd){const _0x2e36b7=_0x57d3;if(!todayKeyDate)todayKeyDate=getTodayKeyDate();localStorage['setItem'](_0x2e36b7(0x94),todayKeyDate),localStorage[_0x2e36b7(0xb2)](_0x2e36b7(0x98),_0x3ed9bd);}function getSavedKeyForToday(){const _0x37878d=_0x57d3,_0x165228=localStorage['getItem'](_0x37878d(0x94)),_0x13c997=localStorage[_0x37878d(0x9d)](_0x37878d(0x98)),_0x41c9a3=getTodayKeyDate();if(_0x165228===_0x41c9a3&&_0x13c997)return _0x13c997;return localStorage[_0x37878d(0xa7)](_0x37878d(0x94)),localStorage['removeItem']('savedKeyValue'),null;}function _0x1106(){const _0x3b5d4d=['true','getItem','1565402otDcQh','4983115gKiMwt','Key\x20not\x20found.','getElementById','<div\x20class=\x22alert\x20alert-warning\x22><i\x20class=\x22bi\x20bi-exclamation-triangle\x22></i>\x20Unable\x20to\x20verify\x20key.\x20Please\x20try\x20again\x20later.</div>','<div\x20class=\x22alert\x20alert-success\x22><i\x20class=\x22bi\x20bi-check-circle\x22></i>\x20Sign\x20in\x20successful!\x20Redirecting...</div>','submit','1197710aLOhVY','checked','removeItem','9dPEjei','.txt','<div\x20class=\x22alert\x20alert-danger\x22><i\x20class=\x22bi\x20bi-x-circle\x22></i>\x20Key\x20is\x20not\x20correct.</div>','4507223BaMSIW','82dVPusa','innerHTML','href','getUTCDate','key-input','132mVFQFx','setItem','7824392oXGlSc','4gnwTDY','getUTCFullYear','rememberKeyEnabled','log','addEventListener','signin-message','https://raw.githubusercontent.com/cee-tv/iptvphkey/main/keys/','<div\x20class=\x22alert\x20alert-info\x22><i\x20class=\x22bi\x20bi-arrow-clockwise\x22></i>\x20Signing\x20you\x20in\x20automatically...</div>','savedKeyDate','save-key','trim','preventDefault','savedKeyValue','padStart','3622008UymzNa','60693uKBUsR'];_0x1106=function(){return _0x3b5d4d;};return _0x1106();}function redirectToMain(){const _0x21b684=_0x57d3;sessionStorage.setItem('sessionSignedInDate', getTodayKeyDate());window.location.href = 'home.html';}document[_0x4e6afc(0xb8)]('DOMContentLoaded',async()=>{const _0x41cac7=_0x4e6afc,_0x1de78e=document['getElementById']('signin-form'),_0x17d008=document['getElementById'](_0x41cac7(0xb0)),_0x77ece6=document[_0x41cac7(0xa1)](_0x41cac7(0x95)),_0x47ca64=document[_0x41cac7(0xa1)](_0x41cac7(0xb9));await fetchTodayKey();const _0x587a45=localStorage[_0x41cac7(0x9d)]('rememberKeyEnabled');if(_0x587a45===_0x41cac7(0x9c)){tryAutoSignIn();return;}else showSignInForm(_0x47ca64);_0x1de78e['addEventListener'](_0x41cac7(0xa4),_0x2de81b=>{const _0x4ea631=_0x41cac7;_0x2de81b[_0x4ea631(0x97)](),_0x47ca64['innerHTML']='';if(!todayKey){_0x47ca64[_0x4ea631(0xad)]=_0x4ea631(0xa2);return;}_0x17d008['value'][_0x4ea631(0x96)]()===todayKey?(_0x77ece6[_0x4ea631(0xa6)]&&(saveKeyForToday(todayKey),localStorage['setItem'](_0x4ea631(0xb6),'true')),sessionStorage[_0x4ea631(0xb2)]('sessionSignedInDate',getTodayKeyDate()),_0x47ca64['innerHTML']=_0x4ea631(0xa3),setTimeout(redirectToMain,0x320)):_0x47ca64[_0x4ea631(0xad)]=_0x4ea631(0xaa),_0x17d008['value']='';});});function tryAutoSignIn(){const _0x4224af=_0x4e6afc,_0x54192e=document[_0x4224af(0xa1)](_0x4224af(0xb9));_0x54192e[_0x4224af(0xad)]=_0x4224af(0x93);const _0x57e9ab=getSavedKeyForToday();_0x57e9ab&&todayKey&&_0x57e9ab===todayKey?(sessionStorage[_0x4224af(0xb2)]('sessionSignedInDate',getTodayKeyDate()),setTimeout(redirectToMain,0x320)):(localStorage['removeItem'](_0x4224af(0xb6)),showSignInForm(_0x54192e));}function showSignInForm(_0x5d559a){}
+  </script>
+</body>
+</html>
