@@ -289,8 +289,12 @@ const channels = [
         number: 29,
         name: 'CARTOON NETWORK',
         category: 'Cignal',
-        type: 'hls',
-        url: 'https://cdn4.skygo.mn/live/disk1/Cartoon_Network/HLSv3-FTA/Cartoon_Network.m3u8',  
+        type: 'mpd',
+        url: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cartoonnetworkhd.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'a2d1f552ff9541558b3296b5a932136b',key: 'cdd48fa884dc0c3a3f85aeebca13d444',},
+        },
     },
     {
         number: 30,
@@ -1412,49 +1416,54 @@ const channels = [
 ]
 
 function setupChannelList() {
-    const list = document.getElementById('channelList');
-    const countDisplay = document.getElementById('channelCount');
-    const searchValue = document.getElementById('searchInput').value.toLowerCase();
-    const selectedCategory = document.getElementById('categoryFilter').value;
+  const list = document.getElementById('channelList');
+  const countDisplay = document.getElementById('channelCount');
+  const searchValue = document.getElementById('searchInput').value.toLowerCase();
+  const selectedCategory = document.getElementById('categoryFilter').value;
 
-    list.innerHTML = '';
-    let totalCount = 0;
+  list.innerHTML = '';
+  let totalCount = 0;
+  let visibleIndex = 0;
 
-    const filteredChannels = channels.map((channel, originalIndex) => ({ channel, originalIndex }))
-        .filter(({ channel }) => {
-            const matchesCategory = selectedCategory === 'all' || channel.category === selectedCategory;
-            const matchesSearch = channel.name.toLowerCase().includes(searchValue);
-            return matchesCategory && matchesSearch;
-        });
+  channels.forEach((channel, originalIndex) => {
+    const matchesCategory = selectedCategory === 'all' || channel.category === selectedCategory;
+    const matchesSearch = channel.name.toLowerCase().includes(searchValue);
 
-    totalCount = filteredChannels.length;
-    
-    filteredChannels.forEach(({ channel, originalIndex }) => {
-        const displayNumber = originalIndex + 1;
+    if (matchesCategory && matchesSearch) {
+      totalCount++;
 
-        const listItem = document.createElement('li');
-        listItem.tabIndex = 0;
-        listItem.onclick = () => loadChannel(originalIndex);
-        listItem.setAttribute('data-number', displayNumber);
-        listItem.setAttribute('data-original-index', originalIndex);
+      const displayNumber = originalIndex + 1;
 
-        if (originalIndex === activeIndex) {
-            listItem.classList.add('active');
-            currentChannelIndex = originalIndex;
-            
-            // Use requestAnimationFrame to ensure smooth positioning
-            requestAnimationFrame(() => {
-                listItem.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                    inline: 'nearest'
-                });
-            });
+      const listItem = document.createElement('li');
+      listItem.tabIndex = 0;
+      
+      // Modified click handler to restart current channel
+      listItem.onclick = () => {
+        if (activeIndex === originalIndex) {
+          // Force restart of current channel
+          activeIndex = -1; // Reset to force reload
+          loadChannel(originalIndex);
+          showChannelInfo(originalIndex);
+        } else {
+          loadChannel(originalIndex);
+          showChannelInfo(originalIndex);
         }
+        scrollChannelToMiddle(originalIndex);
+      };
+      
+      listItem.setAttribute('data-number', displayNumber);
+      listItem.setAttribute('data-original-index', originalIndex);
 
-        listItem.textContent = channel.name + ' ';
-        list.appendChild(listItem);
-    });
+      if (originalIndex === activeIndex) {
+        listItem.classList.add('active');
+        currentChannelIndex = originalIndex;
+      }
 
-    countDisplay.textContent = `Total: ${totalCount}/${channels.length}`;
+      listItem.textContent = channel.name + ' ';
+
+      list.appendChild(listItem);
+    }
+  });
+
+  countDisplay.textContent = `Total: ${totalCount}/${channels.length}`;
 }
