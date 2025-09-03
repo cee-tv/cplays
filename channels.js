@@ -289,12 +289,8 @@ const channels = [
         number: 29,
         name: 'CARTOON NETWORK',
         category: 'Cignal',
-        type: 'mpd',
-        url: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cartoonnetworkhd.mpd',
-        drm:
-        {
-            clearkey: {keyId: 'a2d1f552ff9541558b3296b5a932136b',key: 'cdd48fa884dc0c3a3f85aeebca13d444',},
-        },
+        type: 'hls',
+        url: 'https://cdn4.skygo.mn/live/disk1/Cartoon_Network/HLSv3-FTA/Cartoon_Network.m3u8',
     },
     {
         number: 30,
