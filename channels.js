@@ -289,8 +289,12 @@ const channels = [
         number: 29,
         name: 'CARTOON NETWORK',
         category: 'Cignal',
-        type: 'hls',
-        url: 'https://cdn4.skygo.mn/live/disk1/Cartoon_Network/HLSv3-FTA/Cartoon_Network.m3u8',
+        type: 'mpd',
+        url: 'https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cartoonnetworkhd.mpd',
+        drm:
+        {
+            clearkey: {keyId: 'a2d1f552ff9541558b3296b5a932136b',key: 'cdd48fa884dc0c3a3f85aeebca13d444',},
+        },
     },
     {
         number: 30,
@@ -1419,40 +1423,41 @@ function setupChannelList() {
 
     list.innerHTML = '';
     let totalCount = 0;
-    let visibleIndex = 0;
 
-    channels.forEach((channel, originalIndex) => {
-        const matchesCategory = selectedCategory === 'all' || channel.category === selectedCategory;
-        const matchesSearch = channel.name.toLowerCase().includes(searchValue);
+    const filteredChannels = channels.map((channel, originalIndex) => ({ channel, originalIndex }))
+        .filter(({ channel }) => {
+            const matchesCategory = selectedCategory === 'all' || channel.category === selectedCategory;
+            const matchesSearch = channel.name.toLowerCase().includes(searchValue);
+            return matchesCategory && matchesSearch;
+        });
 
-        if (matchesCategory && matchesSearch) {
-            totalCount++;
+    totalCount = filteredChannels.length;
+    
+    filteredChannels.forEach(({ channel, originalIndex }) => {
+        const displayNumber = originalIndex + 1;
 
-            const displayNumber = originalIndex + 1;
+        const listItem = document.createElement('li');
+        listItem.tabIndex = 0;
+        listItem.onclick = () => loadChannel(originalIndex);
+        listItem.setAttribute('data-number', displayNumber);
+        listItem.setAttribute('data-original-index', originalIndex);
 
-            const listItem = document.createElement('li');
-            listItem.tabIndex = 0;
-            listItem.onclick = () => loadChannel(originalIndex);
-            listItem.setAttribute('data-number', displayNumber);
-            listItem.setAttribute('data-original-index', originalIndex);
-
-            if (originalIndex === activeIndex) {
-                listItem.classList.add('active');
-                currentChannelIndex = originalIndex;
-                
-                // Ensure selected channel is visible in container
-                setTimeout(() => {
-                    listItem.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'nearest',
-                        inline: 'nearest'
-                    });
-                }, 100);
-            }
-
-            listItem.textContent = channel.name + ' ';
-            list.appendChild(listItem);
+        if (originalIndex === activeIndex) {
+            listItem.classList.add('active');
+            currentChannelIndex = originalIndex;
+            
+            // Use requestAnimationFrame to ensure smooth positioning
+            requestAnimationFrame(() => {
+                listItem.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'nearest'
+                });
+            });
         }
+
+        listItem.textContent = channel.name + ' ';
+        list.appendChild(listItem);
     });
 
     countDisplay.textContent = `Total: ${totalCount}/${channels.length}`;
