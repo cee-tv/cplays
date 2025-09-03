@@ -295,6 +295,7 @@ function handleRemoteAction(action) {
                 const prevIndex = parseInt(prevItem.getAttribute('data-original-index'));
                 loadChannel(prevIndex);
                 showChannelInfo(prevIndex);
+                scrollChannelToMiddle(prevIndex);
             }
             break;
         case 'down':
@@ -304,6 +305,7 @@ function handleRemoteAction(action) {
                 const nextIndex = parseInt(nextItem.getAttribute('data-original-index'));
                 loadChannel(nextIndex);
                 showChannelInfo(nextIndex);
+                scrollChannelToMiddle(nextIndex);
             }
             break;
         case 'left':
@@ -433,6 +435,26 @@ function hideKeyboardGuide() {
     keyboardGuide.classList.remove('show');
 }
 
+// Add function to scroll channel to middle of visible area
+function scrollChannelToMiddle(index) {
+    const list = document.getElementById('channelList');
+    const listContainer = document.querySelector('.list-container');
+    if (!list || !listContainer) return;
+
+    const channelItem = list.querySelector(`li[data-original-index="${index}"]`);
+    if (!channelItem) return;
+
+    const containerHeight = listContainer.clientHeight;
+    const itemHeight = channelItem.offsetHeight;
+    const itemOffset = channelItem.offsetTop;
+    const scrollTop = itemOffset - (containerHeight / 2) + (itemHeight / 2);
+
+    listContainer.scrollTo({
+        top: Math.max(0, scrollTop),
+        behavior: 'smooth'
+    });
+}
+
 // Keyboard event handler
 function handleKeyboardEvents(e) {
     if (e.target.tagName === 'INPUT') return;
@@ -457,6 +479,7 @@ function handleKeyboardEvents(e) {
                 const prevIndex = parseInt(prevItem.getAttribute('data-original-index'));
                 loadChannel(prevIndex);
                 showChannelInfo(prevIndex);
+                scrollChannelToMiddle(prevIndex);
             }
             break;
         case 'ArrowDown':
@@ -467,6 +490,7 @@ function handleKeyboardEvents(e) {
                 const nextIndex = parseInt(nextItem.getAttribute('data-original-index'));
                 loadChannel(nextIndex);
                 showChannelInfo(nextIndex);
+                scrollChannelToMiddle(nextIndex);
             }
             break;
         case 'ArrowLeft':
@@ -844,7 +868,7 @@ function initPlayer() {
     });
 }
 
-// Update the loadChannel function to auto-close sidebar when a channel is selected
+// Update the loadChannel function to not auto-close sidebar
 function loadChannel(index) {
     if (activeIndex === index && !isReconnecting) return;
 
